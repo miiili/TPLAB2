@@ -1,0 +1,49 @@
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(12, 11, 2, 3, 4, 5);
+float a, b, c, aux, x1, x2;
+
+void setup() {
+  lcd.begin(16, 2);
+
+  Serial.begin(9600);
+  Serial.println("Ingrese el coeficiente a:");
+}
+
+void loop() {
+  while (Serial.available() == 0);
+  a = Serial.parseFloat();
+  Serial.println(a);
+  aux = Serial.parseFloat();
+
+  Serial.println("Ingrese el coeficiente b:");
+  while (Serial.available() == 0);
+  b = Serial.parseFloat();
+  Serial.println(b);
+  aux = Serial.parseFloat();
+
+  Serial.println("Ingrese el coeficiente c:");
+  while (Serial.available() == 0);
+  c = Serial.parseFloat();
+  Serial.println(c);
+  aux = Serial.parseFloat();  
+
+  float d = (b * b) - (4 * a * c);
+
+  if (d >= 0) {
+    x1 = (-b + sqrt(d)) / (2 * a);
+    x2 = (-b - sqrt(d)) / (2 * a);
+
+    lcd.setCursor(1, 0);
+    lcd.print("x1 = ");
+    lcd.print(x1);
+    lcd.setCursor(0, 1);
+    lcd.print(" x2 = ");
+    lcd.print(x2);
+  } else {
+    lcd.setCursor(1, 0);
+    lcd.print("No hay raices");
+  }
+
+  while (true) {}
+}
+
