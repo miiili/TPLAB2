@@ -1,0 +1,52 @@
+
+#include <LiquidCrystal.h>
+#include <math.h>
+
+#define RS 12
+#define EN 11
+#define D4 2
+#define D5 3
+#define D6 4
+#define D7 5
+LiquidCrystal lcd(RS, EN, D4, D5, D6, D7);
+
+
+float px=0, py=0, aux;
+
+void setup() {
+  lcd.begin(16, 2);
+
+  Serial.begin(9600);
+  Serial.println("Ingrese el coeficiente X:");
+}
+
+void loop() {
+  
+  while (Serial.available() == 0);
+  px = Serial.parseFloat();
+  Serial.println(px);
+  aux = Serial.parseFloat();
+
+  Serial.println("Ingrese el coeficiente Y:");
+  while (Serial.available() == 0);
+  py = Serial.parseFloat();
+  Serial.println(py);
+  aux = Serial.parseFloat(); 
+  
+	float suma;
+	suma=pow(px,2)+pow(py,2);
+	float mod;
+	mod=sqrt(suma);
+  	float ang;
+  	ang=atan(py/px);
+  	lcd.setCursor(2, 0);
+  	lcd.print("Modulo=");
+	lcd.print(mod);
+ 	lcd.scrollDisplayLeft();
+ 	lcd.setCursor(2, 1);
+  	lcd.print("Angulo=");
+	lcd.print(ang);
+  	lcd.print("rad");
+ 	lcd.scrollDisplayLeft();
+ delay(500);
+}
