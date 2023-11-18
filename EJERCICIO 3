@@ -1,0 +1,32 @@
+#include <LiquidCrystal.h>
+
+#define RS 12
+#define EN 11
+#define D4 2
+#define D5 3
+#define D6 4
+#define D7 5
+
+LiquidCrystal lcd(RS, EN, D4, D5, D6, D7);
+
+const char* texto = " UTN - Facultad Regional San Francisco";
+const int longitud = strlen(texto);
+int posicion = 0;
+int direccion = 1;
+
+void setup() {
+  lcd.begin(16, 2);
+}
+
+void loop() {
+  lcd.setCursor(0, 0);
+  lcd.print(texto);
+  lcd.scrollDisplayLeft();
+  posicion += direccion;
+
+  if (posicion == longitud - 16 || posicion == 0) {
+    direccion = -direccion;
+  }
+  delay(500);
+}
+
