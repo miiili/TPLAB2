@@ -1,0 +1,77 @@
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 2, 3, 4, 5);
+
+int botonInicio = 9;
+int botonReset = 10;
+int horas = 0;
+int minutos = 0;
+int segundos = 0;
+int decimas = 0;
+bool corriendo = false;
+unsigned long tiempoAnterior = 0;
+unsigned long tiempoActual = 0;
+
+void setup() {
+  lcd.begin(16, 2);
+  pinMode(botonInicio, INPUT);
+  pinMode(botonReset, INPUT);
+}
+
+void loop() {
+  if (digitalRead(botonInicio) == LOW) {
+    if (digitalRead(9) == LOW) {
+      corriendo = true;
+    }
+  }
+
+  if (digitalRead(botonReset) == LOW) {
+    horas = 0;
+    minutos = 0;
+    segundos = 0;
+    decimas = 0;
+    corriendo = false;
+    while (digitalRead(botonReset) == LOW) {
+      // Espera a que el botón de reset se suelte
+    }
+  }
+
+  if (corriendo) {
+    tiempoActual = millis();
+    if (tiempoActual - tiempoAnterior >= 100) {
+      tiempoAnterior = tiempoActual;
+      decimas++;
+      if (decimas > 9) {
+        decimas = 0;
+        segundos++;
+        if (segundos > 59) {
+          segundos = 0;
+          minutos++;
+          if (minutos > 59) {
+            minutos = 0;
+            horas++;
+            if (horas > 99) {
+              horas = 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  lcd.setCursor(0, 0);
+  lcd.print("Cronometro:");
+  lcd.setCursor(0, 1);
+  if (horas < 10) lcd.print("0");
+  lcd.print(horas);
+  lcd.print(":");
+  if (minutos < 10) lcd.print("0");
+  lcd.print(minutos);
+  lcd.print(":");
+  if (segundos < 10) lcd.print("0");
+  lcd.print(segundos);
+  lcd.print(".");
+  lcd.print(decimas);
+}
+
+
